@@ -152,7 +152,9 @@ footer {
   color: var(--muted);
   font-size: 0.9rem;
   padding-top: 1.1rem;
-  padding-bottom: 1.6rem;
+  /* Room below the links: on iPhone, Safari's first tap near the bottom
+     edge only brings back its toolbar, so keep the links above that zone. */
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
 }
 
 /* On a narrow phone the dots would crowd the title, so they go. */
