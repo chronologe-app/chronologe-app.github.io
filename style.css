@@ -1,18 +1,40 @@
+/*
+  Chronologe site styles.
+
+  Colors come from the app icon (Icon/OG/*.svg in the app repo):
+    Light icon: band #C9440A, body #E8C87A, face #D4A843, hands #5C2A04
+    Dark icon:  band #8B2E00, body #1A0800, face #2E1800, hands #FFDC6A,
+                second hand #FF6B1A
+  Variants (lighter cream, deeper link red) keep text at WCAG AA contrast.
+*/
+
 :root {
-  --bg: #ffffff;
-  --text: #1c1c1e;
-  --muted: #6c6c70;
-  --accent: #0a66d8;
-  --rule: #e5e5ea;
+  --bg: #FBF4E4;          /* icon sand, lightened for reading */
+  --surface: #F3E2B5;     /* icon sand, slightly lightened */
+  --text: #5C2A04;        /* icon hands */
+  --muted: #7A5230;
+  --heading: #5C2A04;
+  --accent: #A8380A;      /* icon band, deepened for link contrast */
+  --accent-hover: #C9440A;
+  --band: #C9440A;        /* icon band */
+  --band-text: #FFF8EA;
+  --band-dot: #E8C87A;    /* icon dots */
+  --rule: #E8C87A;        /* icon body */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #000000;
-    --text: #f2f2f7;
-    --muted: #a1a1a6;
-    --accent: #4da3ff;
-    --rule: #2c2c2e;
+    --bg: #1A0800;        /* dark icon body */
+    --surface: #2E1800;   /* dark icon face */
+    --text: #F3E4C4;
+    --muted: #C2A57A;
+    --heading: #FFDC6A;   /* dark icon hands */
+    --accent: #FF6B1A;    /* dark icon second hand */
+    --accent-hover: #FF8A47;
+    --band: #8B2E00;      /* dark icon band */
+    --band-text: #FFDC6A;
+    --band-dot: #1A0800;  /* dark icon dots */
+    --rule: #4A3412;      /* like the dark icon's clock ring */
   }
 }
 
@@ -24,44 +46,116 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-main, header, footer {
+::selection { background: var(--band); color: var(--band-text); }
+
+/* Content column: 40rem wide, 16px gutters on small screens. */
+main {
   max-width: 40rem;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 2rem 16px 2.5rem;
 }
 
+/* The header and footer run edge to edge, with their contents lined up
+   on the same column as main. */
+header, footer {
+  padding-left: max(16px, calc((100% - 40rem) / 2 + 16px));
+  padding-right: max(16px, calc((100% - 40rem) / 2 + 16px));
+}
+
+/* Header: the icon's calendar band, three dots included. */
 header {
-  padding-top: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--rule);
+  position: relative;
+  background: var(--band);
+  color: var(--band-text);
+  padding-top: 1.5rem;
+  padding-bottom: 1.1rem;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: max(16px, calc((100% - 40rem) / 2 + 16px));
+  width: 76px;
+  height: 18px;
+  margin-top: -9px;
+  background:
+    radial-gradient(circle, var(--band-dot) 8px, transparent 8.5px) 0 0 / 18px 18px no-repeat,
+    radial-gradient(circle, var(--band-dot) 8px, transparent 8.5px) 29px 0 / 18px 18px no-repeat,
+    radial-gradient(circle, var(--band-dot) 8px, transparent 8.5px) 58px 0 / 18px 18px no-repeat;
 }
 
 header a.home {
-  color: var(--text);
-  font-weight: 600;
+  color: var(--band-text);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
   text-decoration: none;
 }
 
-nav { margin-top: 0.25rem; }
-nav a { margin-right: 1rem; }
+nav { margin-top: 0.2rem; }
 
-main { padding-top: 1.5rem; padding-bottom: 2rem; }
+nav a {
+  color: var(--band-text);
+  margin-right: 1.1rem;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+}
 
-h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 0.5rem; }
-h2 { font-size: 1.2rem; margin: 2rem 0 0.5rem; }
+nav a:hover, nav a:focus-visible { border-bottom-color: var(--band-text); }
 
-a { color: var(--accent); }
+/* Headings */
+h1 {
+  color: var(--heading);
+  font-size: 2.1rem;
+  line-height: 1.15;
+  margin: 0 0 0.4rem;
+}
 
-.tagline { color: var(--muted); font-style: italic; margin-top: 0; }
+h2 {
+  color: var(--heading);
+  font-size: 1.2rem;
+  margin: 2.2rem 0 0.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+}
+
+/* Links */
+a { color: var(--accent); text-underline-offset: 0.15em; }
+a:hover { color: var(--accent-hover); }
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+header a:focus-visible { outline-color: var(--band-text); }
+
+strong { color: var(--heading); }
+
+.tagline {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-top: 0;
+}
+
 .updated { color: var(--muted); margin-top: 0; }
 
 footer {
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-  border-top: 1px solid var(--rule);
+  background: var(--surface);
   color: var(--muted);
   font-size: 0.9rem;
+  padding-top: 1.1rem;
+  padding-bottom: 1.6rem;
+}
+
+/* On a narrow phone the dots would crowd the title, so they go. */
+@media (max-width: 380px) {
+  header::after { display: none; }
 }
